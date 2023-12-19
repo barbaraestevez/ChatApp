@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'ChatClient';
+
+  getMin(...numbers:number[]){
+    return Math.min(...numbers);
+  }
 }

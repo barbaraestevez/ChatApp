@@ -14,7 +14,7 @@ const io = socketIo(server, {
 });
 
 const users = {};
-const rooms = {};
+const rooms = [];
 
 io.on('connection', (socket) => {
     console.log(`Usuario ${socket.id} conectado`);
@@ -23,8 +23,9 @@ io.on('connection', (socket) => {
         const { username, room } = data;
         users[socket.id] = { username, room };
         socket.join(room);
+        rooms.push(room);
 
-        socket.emit('chat', `¡Bienvenido ${username}!`);
+        socket.emit('join', `¡Bienvenido ${username}!`);
         io.to(room).emit('chat', `${username} se ha unido a la sala ${room}`);
     })
 
@@ -32,17 +33,18 @@ io.on('connection', (socket) => {
         const user = users[socket.id];
         const room = user.room;
 
-        io.to(room).emit('chat', `${user.username} >> ${msg}`);
+        io.to(room).emit('chat', { msg: `${user.username} >> ${msg}`, room: room });
         //io.emit('chat', msg);
 
-        getMsg();
+       // getMsg();
     }) 
-
+}
+/*
     socket.on ('disconnect', () => {
         const user = users[socket.id];
         if(user){
             const room = user.room;
-            io.to(room).emit('chat', `${user.username} se ha unido a la sala ${room}`)
+            io.to(room).emit('chat', `${user.username} se ha ido de la sala ${room}`)
         }
         console.log(`Usuario ${socket.id} desconectado`);
     })
@@ -56,10 +58,12 @@ const rl = readLine.createInterface({
     input: process.stdin,
     output: process.stdout,
 })
-
+*/
+/*
 function getMsg(){
     rl.question('Respuesta: ',(msg) => {
         io.emit('chat', `Server: ${msg}`);
         getMsg();
     })
 }
+*/)

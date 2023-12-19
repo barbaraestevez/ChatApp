@@ -26,4 +26,11 @@ describe('AppComponent', () => {
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('.content span')?.textContent).toContain('ChatClient app is running!');
   });
+  it('should result of sum()...', ()=>{
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const app = fixture.componentInstance;
+    
+    expect(app.getMin(21,52,365,12)).toEqual(12);
+  })
 });
